@@ -15,4 +15,4 @@ class Token(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'base_token'
+        db_table = 'token'
