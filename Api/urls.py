@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from base.views import AuthReportView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^auth/', AuthReportView.as_view(), name="api-auth-reporte-admin"),
     
 ]
