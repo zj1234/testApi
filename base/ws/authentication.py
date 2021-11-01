@@ -30,7 +30,7 @@ class BenchmarkTokenAuthentication(authentication.BaseAuthentication):
         else:
             token=data["token"]
             user=data["user"]
-            _token=(Token.objects.filter(token=token))
+            _token=Token.objects.filter(token=token, cliente_usuario_id=user)
             _userAdmin=Client.objects.filter(cliente_usuario_id=user,\
                 perfil_id=0)
             #print(_token, _userAdmin)
