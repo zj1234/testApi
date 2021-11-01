@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from base.views import AuthReportView
-from base.ws.resources import WsView, WsNewView, WsNewCarView
+from base.ws.resources import WsView, WsNewView, WsNewCarView, WsNewRepairCarView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^base/', WsView.as_view(), name="base"),
     url(r'^base-new/', WsNewView.as_view(), name="base/new"),
     url(r'^base-newCar/', WsNewCarView.as_view(), name="base/newCar"),
+    url(r'^base-newRepairCar/', WsNewRepairCarView.as_view(), name="base/newRepairCar"),
     
 ]

@@ -8,16 +8,17 @@
 
     @author Aldo Cruz Romero  <acruz2094@gmail.com>
 
-    @brief  * BenchmarksViewSet: Clase ViewSet que permite devolver información.
-    @date   Jun/2019
+    @brief  * Clase ViewSet que permite devolver información.
+    @date   nov/2021
     @todo       * Replicacion métodos de WebServices 
 """
 from dateutil import tz
+from pytz import timezone
 from rest_framework.views import APIView
 from datetime import datetime, time,date, timedelta
 from rest_framework.response import Response
+from django.utils.timezone import utc
 from rest_framework.decorators import action
-from django.utils import timezone as dt
 from .authentication import BenchmarkTokenAuthentication
 from utils.error_api import ApiErrorCodesMessages
 from base.models import Client, Car, Repair
@@ -27,10 +28,8 @@ Clase para Vistas Generales de WebService
 es necesario token y user con perfil de admin
 """
 class WsView(APIView):
-    print("ws")
     authentication_classes = (BenchmarkTokenAuthentication,)
     def get(self, request, format=None):
-        #print("wsget")
         try:
             requestData= request.query_params
             method=requestData["method"]
@@ -165,5 +164,53 @@ class WsNewCarView(APIView):
         return {"detalle":"Nuevo Auto Ingresado de "+_client.get()["name"]}
 
   
-
-    
+"""
+Clase para Vistas de Nueva Reparacion de Auto
+es necesario token y user con perfil de admin
+"""
+class WsNewRepairCarView(APIView):
+    authentication_classes = (BenchmarkTokenAuthentication,)
+    def get(self, request, format=None):        
+        #VERIFICA FORMATO DE PATENTE
+        try:
+            patente=request.query_params["patente"]
+            detail=request.query_params["detail"]
+            try:
+                validPatente=str(patente).split("-")
+                if len(validPatente)!=3:
+                    ApiErrorCodesMessages.BadFormat()
+            except Exception as e:
+                ApiErrorCodesMessages.BadFormat()
+        except Exception as e:
+            return ApiErrorCodesMessages.AuthData(str(e))
+        _dataCar=(Car.objects.filter(patente=patente).values())
+        #VALIDA SI EXISTE AUTO
+        if not _dataCar:
+            return ApiErrorCodesMessages.NoData()
+        #VALIDA A QUE CLIENTE PERTENECE AUTO
+        _dataClient=(Client.objects.filter(cliente_usuario_id=_dataCar.get()["id_client"]).values())
+        if not _dataClient:
+            return ApiErrorCodesMessages.NoData()
+        data=WsNewRepairCarView.createRepair(_dataClient.get(), _dataCar, detail)
+        if data is False:
+            return ApiErrorCodesMessages.NoInsert()
+        return Response(data)
+    """
+    @brief Método estático que inserta o actualiza tablas de reparacion 
+    para el ingreso de una nueva repacion por auto por cliente,
+    @return void
+    """
+    @staticmethod
+    def createRepair(client, car, detail):
+        try:
+            Repair.objects.create(id_car=car.get()["id_ingreso"], description=detail)
+        except Exception as e:
+            return False
+        try:
+            idRepair=int(Repair.objects.values().latest('id')["id"])
+            car.update(id_reparacion=idRepair)
+        except Exception as e:
+            return False
+        dateRepair=str(datetime.now(timezone('America/Santiago')).replace(tzinfo=utc))
+        return {"detalle":"Nueva Reparacion Ingresada de "+client["name"]+\
+             "de auto "+car.get()["model"]+" "+car.get()["patente"] +" con fecha de ingreso "+dateRepair}

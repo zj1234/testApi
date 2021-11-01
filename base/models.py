@@ -3,7 +3,9 @@ from __future__ import unicode_literals
 from django.db import models
 from utils.date import datetimeExpired
 from django.db.models import JSONField
-
+from pytz import timezone
+from datetime import datetime, time,date, timedelta
+from django.utils.timezone import utc
 class Token(models.Model):
 
     cliente_usuario_id = models.IntegerField(unique=True)
@@ -46,7 +48,7 @@ class Repair(models.Model):
     id = models.IntegerField(unique=True, primary_key=True)
     id_car = models.IntegerField(blank=False)
     description=models.TextField(blank=False)
-    entryDate=models.DateTimeField(blank=False)
+    entryDate=models.DateTimeField(default=datetime.now(timezone('America/Santiago')).replace(tzinfo=utc))
     finalDate=models.DateTimeField()
 
     class Meta:

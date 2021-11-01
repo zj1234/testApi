@@ -41,3 +41,6 @@ class ApiErrorCodesMessages:
     @staticmethod
     def AuthData(e):
         raise AuthFailed('Parametro Faltante '+e)
+    @staticmethod
+    def BadFormat():
+        raise AuthFailed('Parametro de patente mal ingresado, ej:aa-bb-cc')
