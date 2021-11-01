@@ -1,0 +1,39 @@
+{% extends "admin/login.html" %}
+{% load i18n static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Atentus Recovery Pass') }}{% endblock %}
+
+{% block branding %}
+<h1 style="display:none" >{{ site_header|default:_('Atentus') }}</h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div style="background-color:#f47001;color:white;height:50px;text-align:center;font-family: Arial, Helvetica, sans-serif;font-size:52px">
+        <img style="width:40%;" src="/static/vista_semaforo/img/header_blanco.png"/>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div id="form_recovery" style="text-align:center">
+        <form action="{{ mailPass }}" method="post">{% csrf_token %}
+            <p STYLE="font-size:12px;">Ingresa un nuevo password para el usuario: <strong>{{ name }} </strong></p>
+            <fieldset class="module aligned">
+                <div class="form-pass">
+                    <input align="center" onfocus="this.value=''" type="password" name="pass1"  id="pass1" value="Ingrese Password">
+                    <input align="center" onfocus="this.value=''" type="password" name="pass2"  id="pass2" value ="Reingrese Password">
+                    <br>
+                    {{ display }}
+                    <br>
+                    <input id ="sendPass" style="width:53%;background-color: #f47001;" align="center" type="submit" value="ENVIAR" />
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+    <div>
+        <p style="font-size:10px;font-family: Arial, Helvetica, sans-serif">*Su contraseña debe ser de al menos 8 caracteres y alfanumerica</p>
+    </div>
+<script>
+    document.getElementById("header").style.display = "none";
+</script>
+{% endblock %}
