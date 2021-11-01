@@ -30,5 +30,8 @@ class ApiErrorCodesMessages:
     def AuthUser():
         raise AuthFailed('Usuario No posee permisos suficientes')
     @staticmethod
+    def NoData():
+        raise AuthFailed('No Existe data Solicitada')
+    @staticmethod
     def AuthData(e):
         raise AuthFailed('Parametro Faltante '+e)

@@ -20,13 +20,13 @@ from rest_framework.decorators import action
 from django.utils import timezone as dt
 from .authentication import BenchmarkTokenAuthentication
 from utils.error_api import ApiErrorCodesMessages
-from base.models import Client, Car
+from base.models import Client, Car, Repair
 
 class WsView(APIView):
-    print("ws")
+    #print("ws")
     authentication_classes = (BenchmarkTokenAuthentication,)
     def get(self, request, format=None):
-        print("wsget")
+        #print("wsget")
         try:
             requestData= request.query_params
             method=requestData["method"]
@@ -39,15 +39,36 @@ class WsView(APIView):
                 values="base"
             data= WsView.getClients(values)
             return Response(data)
+        if method=="repairsByCar":
+            try:
+                patente=requestData["patente"]
+                client=requestData["client"]
+            except Exception as e:
+                return ApiErrorCodesMessages.AuthData(str(e))
+            data=WsView.getCarRepairs(client, patente)
+            if data is False:
+                return ApiErrorCodesMessages.NoData()
+            return Response(data)
         return ApiErrorCodesMessages.AuthData("method")
     
     @staticmethod
     def getClients(value):
         if value=="base":
-            clients=Client.objects.values("name", "cell", "mail")
+            clients=Client.objects.values("cliente_usuario_id","name", "cell", "mail")
         else:
-            clients=Client.objects.values("name", "cars")
+            clients=Client.objects.values("cliente_usuario_id","name", "cars")
         return {"clientes":clients}
+    
+    @staticmethod
+    def getCarRepairs(client, value):
+        _carClients=Car.objects.values("id_ingreso").filter(id_client=client, patente=value)
+        if _carClients:
+            idCar=(_carClients.get()["id_ingreso"])
+            repairsCar=(Repair.objects.filter(id_car=idCar).values("description", \
+                "entryDate", "finalDate"))
+            return {"reparaciones":repairsCar}
+        else:
+            return False
 
 
     

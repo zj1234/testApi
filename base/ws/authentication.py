@@ -33,7 +33,7 @@ class BenchmarkTokenAuthentication(authentication.BaseAuthentication):
             _token=(Token.objects.filter(token=token))
             _userAdmin=Client.objects.filter(cliente_usuario_id=user,\
                 perfil_id=0)
-            print(_token, _userAdmin)
+            #print(_token, _userAdmin)
             if not _token :
                 return ApiErrorCodesMessages.AuthToken()
             if not _userAdmin:
