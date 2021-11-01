@@ -26,3 +26,9 @@ class ApiErrorCodesMessages:
     @staticmethod
     def AuthToken():
         raise AuthFailed('TOKEN NO EXISTE')
+    @staticmethod
+    def AuthUser():
+        raise AuthFailed('Usuario No posee permisos suficientes')
+    @staticmethod
+    def AuthData(e):
+        raise AuthFailed('Parametro Faltante '+e)
