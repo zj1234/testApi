@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from base.views import AuthReportView
+from base.ws.resources import WsView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^auth/', AuthReportView.as_view(), name="api-auth-reporte-admin"),
+    url(r'^auth/', AuthReportView.as_view(), name="auth"),
+    # Rutas de base
+    url(r'^base/', WsView.as_view(), name="base"),
     
 ]
