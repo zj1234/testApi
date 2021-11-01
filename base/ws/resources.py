@@ -214,3 +214,12 @@ class WsNewRepairCarView(APIView):
         dateRepair=str(datetime.now(timezone('America/Santiago')).replace(tzinfo=utc))
         return {"detalle":"Nueva Reparacion Ingresada de "+client["name"]+\
              "de auto "+car.get()["model"]+" "+car.get()["patente"] +" con fecha de ingreso "+dateRepair}
+
+"""
+Clase para Vistas de Nueva Reparacion de Auto
+es necesario token y user con perfil de admin
+"""
+class WsAllRepairsView(APIView):
+    authentication_classes = (BenchmarkTokenAuthentication,)
+    def get(self, request, format=None):
+        return Response(Repair.objects.values_list("id", "description", "entryDate").order_by("-entryDate")  )
