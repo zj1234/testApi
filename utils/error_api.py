@@ -33,5 +33,11 @@ class ApiErrorCodesMessages:
     def NoData():
         raise AuthFailed('No Existe data Solicitada')
     @staticmethod
+    def NoContinue():
+        raise AuthFailed('No Es posible Continuar, Ingrese Campos Necesarios')
+    @staticmethod
+    def NoInsert():
+        raise AuthFailed('No se pudo realizar Ingreso')
+    @staticmethod
     def AuthData(e):
         raise AuthFailed('Parametro Faltante '+e)

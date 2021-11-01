@@ -23,7 +23,7 @@ from utils.error_api import ApiErrorCodesMessages
 from base.models import Client, Car, Repair
 
 class WsView(APIView):
-    #print("ws")
+    print("ws")
     authentication_classes = (BenchmarkTokenAuthentication,)
     def get(self, request, format=None):
         #print("wsget")
@@ -70,5 +70,49 @@ class WsView(APIView):
         else:
             return False
 
+class WsNewView(APIView):
+    authentication_classes = (BenchmarkTokenAuthentication,)
+    def get(self, request, format=None):
+        try:
+            requestData= request.query_params
+            clientName=requestData["nombre"]
+            mail=requestData["mail"]
+            cell=requestData["celular"]
+        except Exception as e:
+            return ApiErrorCodesMessages.AuthData(str(e))
+        try:
+            insert=Client.objects.create(perfil_id=1, name=clientName, mail=mail, cell=cell)   
+        except Exception as e:
+            return ApiErrorCodesMessages.NoInsert()
+        return Response({"detalle":"Nuevo Usuario Ingresado"})
+
+class WsNewCarView(APIView):
+    authentication_classes = (BenchmarkTokenAuthentication,)
+    def get(self, request, format=None):
+        try:
+            if 'nombre' in request.query_params:
+                key="name"
+                value=request.query_params["nombre"]
+            if 'mail' in request.query_params:
+                key="mail"
+                value=request.query_params["mail"]
+            if 'clientId' in request.query_params:
+                key="cliente_usuario_id"
+                value=request.query_params["clientId"]
+        except Exception as e:
+            return ApiErrorCodesMessages.NoContinue()
+        try:
+            requestData= request.query_params
+            modelo=requestData["modelo"]
+            patente=requestData["patente"]
+        except Exception as e:
+            return ApiErrorCodesMessages.AuthData(str(e))
+        print(key,value)
+        print(Client.objects.filter(**{key:value}))
+            
+        return Response('hola')
+
+
+  
 
     

@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from base.views import AuthReportView
-from base.ws.resources import WsView
+from base.ws.resources import WsView, WsNewView, WsNewCarView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^auth/', AuthReportView.as_view(), name="auth"),
     # Rutas de base
     url(r'^base/', WsView.as_view(), name="base"),
+    url(r'^base-new/', WsNewView.as_view(), name="base/new"),
+    url(r'^base-newCar/', WsNewCarView.as_view(), name="base/newCar"),
     
 ]
