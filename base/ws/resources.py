@@ -95,7 +95,7 @@ class WsNewView(APIView):
         except Exception as e:
             return ApiErrorCodesMessages.AuthData(str(e))
         try:
-            insert=Client.objects.create(perfil_id=1, name=clientName, mail=mail, cell=cell)   
+            Client.objects.create(perfil_id=1, name=clientName, mail=mail, cell=cell)   
         except Exception as e:
             return ApiErrorCodesMessages.NoInsert()
         return Response({"detalle":"Nuevo Usuario Ingresado"})
@@ -222,4 +222,4 @@ es necesario token y user con perfil de admin
 class WsAllRepairsView(APIView):
     authentication_classes = (BenchmarkTokenAuthentication,)
     def get(self, request, format=None):
-        return Response(Repair.objects.values_list("id", "description", "entryDate").order_by("-entryDate")  )
+        return Response({"arreglos totales":Repair.objects.values_list("id", "description", "entryDate").order_by("-entryDate")  })
