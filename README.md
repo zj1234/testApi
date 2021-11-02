@@ -29,8 +29,6 @@ How to Use
 
 Project
 Fork and clone the git repository
-In the new folder you will find a example env file
-in the env file, are all requirement of intall.
 
 Sources:
 https://docs.djangoproject.com/en/3.2/
