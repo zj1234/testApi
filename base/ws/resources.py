@@ -26,6 +26,9 @@ from base.models import Client, Car, Repair
 """
 Clase para Vistas Generales de WebService
 es necesario token y user con perfil de admin
+@endpoints
+http://0.0.0.0:8082/base/?token=?&method=getClients&user=?
+http://0.0.0.0:8082/base/?token=?&method=getCarsClients&user=?
 """
 class WsView(APIView):
     authentication_classes = (BenchmarkTokenAuthentication,)
@@ -83,6 +86,8 @@ class WsView(APIView):
 """
 Clase para Vistas de Nuevos clientes
 es necesario token y user con perfil de admin
+@endpoints
+http://0.0.0.0:8082/base-new/?token=?&user=?&nombre=?&mail=?&celular=?
 """
 class WsNewView(APIView):
     authentication_classes = (BenchmarkTokenAuthentication,)
@@ -102,6 +107,8 @@ class WsNewView(APIView):
 """
 Clase para Vistas de Nuevos Autos
 es necesario token y user con perfil de admin
+@endpoint
+http://0.0.0.0:8082/base-newCar/?token=?&user=?&clientId=?&modelo=?&patente=?
 """
 class WsNewCarView(APIView):
     authentication_classes = (BenchmarkTokenAuthentication,)
@@ -167,6 +174,8 @@ class WsNewCarView(APIView):
 """
 Clase para Vistas de Nueva Reparacion de Auto
 es necesario token y user con perfil de admin
+@endpoint
+http://0.0.0.0:8082/base-newRepairCar/?token=?&user=?&patente=?&detail=?
 """
 class WsNewRepairCarView(APIView):
     authentication_classes = (BenchmarkTokenAuthentication,)
@@ -218,6 +227,8 @@ class WsNewRepairCarView(APIView):
 """
 Clase para Vistas de Nueva Reparacion de Auto
 es necesario token y user con perfil de admin
+@endpoint
+http://0.0.0.0:8082/base-allRepairs/?token=?&user=?
 """
 class WsAllRepairsView(APIView):
     authentication_classes = (BenchmarkTokenAuthentication,)
