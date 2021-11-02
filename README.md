@@ -1,5 +1,3 @@
-# testApi
-
 Application
 Welcome to testAPi - An open API for testing Perez y Perez.
 
