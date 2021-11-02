@@ -27,7 +27,7 @@ class AuthReportView(APIView):
                     "name", "mail", "cell", "cars", "cliente_usuario_id" ).get()
                 _dataToken= Token.objects.values("token").filter(cliente_usuario_id=\
                     _UserInfo["cliente_usuario_id"]).get()
-                return Response({"token":_dataToken})
+                return Response({"token":_dataToken, "user":_UserInfo})
             else:
                 return Response(error_api.ApiErrorCodesMessages.AuthToken())
         except Exception as e:
